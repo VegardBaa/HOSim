@@ -1,0 +1,20 @@
+{
+    "simulation": {
+      // Wave Parameters
+      "Hs": [3.5, 2.5],                     // float array, [m] Significant wave height
+      "Tp": [12.0, 10.0],                    // float array, [s] Peak period
+      "depth": [50, 40],                   // float array, [m] Water depth
+    
+      // Domain Parameters
+      "length": 3000,                  // float, [m] Spatial domain length
+      "modes": 64,                     // int, [-] Number of modes for the simulation
+      "gravity": 9.81,                 // float, [m/s^2] Gravitational acceleration
+    
+      // Temporal Parameters
+      "time": 200,                     // float, [s] Total simulation time
+      "step_size": 0.025,              // float, [s] Time step size for the RK4 solver
+      "output_interval": 20,           // int, [steps] Interval between output
+      "Ta": 50                         // float, [s] Dommermuth initialization time
+    }
+  }
+  
