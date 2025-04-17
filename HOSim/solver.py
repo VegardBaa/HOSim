@@ -1,7 +1,13 @@
+import numpy as np
 import jax
 import jax.numpy as jnp
 from jax.scipy.special import factorial
 jax.config.update("jax_enable_x64", True)
+
+import matplotlib.pyplot as plt
+from numpy.fft import irfft, rfft
+
+from . import utils
 
 def f(t, y, modes, g, k0, mHOS, Ta):
     eta_hat = y[:modes+1]
@@ -27,7 +33,7 @@ def f(t, y, modes, g, k0, mHOS, Ta):
     deta = jnp.array(W[0], dtype=jnp.float64)
     dphi = jnp.array(-g * eta, dtype=jnp.float64)
 
-    relax = 1 - jnp.exp(- (t / Ta) ** nRelax)
+    relax = 1 - jnp.exp(- (t / Ta) ** 4)
 
     dphideta = jnp.fft.irfft(1j * freqs * eta_hat) * jnp.fft.irfft(1j * freqs * phi_hat)
     dphidphi_square = jnp.fft.irfft(1j * freqs * phi_hat) ** 2
@@ -61,11 +67,11 @@ def f(t, y, modes, g, k0, mHOS, Ta):
     alias_mask = jnp.arange(modes+1) < modes * 2 / (mHOS + 1) + 1
     return jnp.concatenate((jnp.fft.rfft(deta) * alias_mask, jnp.fft.rfft(dphi) * alias_mask))
 
-def rk4_step(t, y, h, modes, g, k0, mHOS, Ta):
-    k1 = h * f_jit(t, y, modes, g, k0, mHOS, nRelax, Ta)
-    k2 = h * f_jit(t + 0.5*h, y + 0.5*k1, modes, g, k0, mHOS, nRelax, Ta)
-    k3 = h * f_jit(t + 0.5*h, y + 0.5*k2, modes, g, k0, mHOS, nRelax, Ta)
-    k4 = h * f_jit(t + h, y + k3, modes, g, k0, mHOS, nRelax, Ta)
+def rk4_step(t, y, h, modes, g, k0, mHOS, Ta, f_jit):
+    k1 = h * f_jit(t, y, modes, g, k0, mHOS, Ta)
+    k2 = h * f_jit(t + 0.5*h, y + 0.5*k1, modes, g, k0, mHOS, Ta)
+    k3 = h * f_jit(t + 0.5*h, y + 0.5*k2, modes, g, k0, mHOS, Ta)
+    k4 = h * f_jit(t + h, y + k3, modes, g, k0, mHOS, Ta)
     
     y_next = y + (1/6)*(k1 + 2*k2 + 2*k3 + k4)
     t_next = t + h
@@ -80,3 +86,28 @@ def simulation(steps, step_size, y0, g, k0, mHOS, nRelax, Ta):
         t += step_size
 
     return y
+
+def run_simulation(params):
+    y = jnp.asarray(utils.get_initial_condition(params), dtype=jnp.complex128)
+    step_size = params["step_size"]
+    steps = int(np.ceil(params["time"] / step_size))
+    f = params["f_jit"]
+    rk4_step = params["rk4_step_jit"]
+
+    g = params["gravity"]
+    k0 = 2 * np.pi / params["length"]
+    mHOS = params["mHOS"]
+    Ta = params["Ta"]
+    modes = params["modes"]
+
+    plt.plot(irfft(y[:modes+1]))
+
+    t = 0
+    for i in range(steps):
+        y = rk4_step(t, y, step_size, modes, g, k0, mHOS, Ta, f)
+        t += step_size
+
+    plt.plot(irfft(y[:modes+1]))
+    plt.xlim(0, 50)
+    plt.show()
+
