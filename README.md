@@ -9,7 +9,7 @@
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/HOSim.git
+git clone https://github.com/VegardBaa/HOSim.git
 cd HOSim
 ```
 
