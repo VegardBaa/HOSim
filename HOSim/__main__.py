@@ -1,7 +1,8 @@
 import sys
 import os
+import time
 
-from . import input_utils, simulation_handler
+from . import io_utils, simulation_handler
 
 def main():
     if len(sys.argv) < 2:
@@ -13,10 +14,12 @@ def main():
         print(f"Input file '{input_path}' does not exist.")
         sys.exit(1)
 
-    config = input_utils.load_json(input_path)
+    start_time = time.time()
+    config = io_utils.load_json(input_path)
     result = simulation_handler.run(config)
+    end_time = time.time()
 
-    print("Simulation complete.")
+    print(f"Simulation complete. Elapsed time: {end_time - start_time:.2f}s")
 
 if __name__ == "__main__":
     main()

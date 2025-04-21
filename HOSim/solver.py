@@ -4,10 +4,13 @@ import jax.numpy as jnp
 from jax.scipy.special import factorial
 jax.config.update("jax_enable_x64", True)
 
+import time
+
 import matplotlib.pyplot as plt
 from numpy.fft import irfft, rfft
 
 from . import utils
+from . import io_utils
 
 def f(t, y, modes, g, k0, mHOS, Ta):
     eta_hat = y[:modes+1]
@@ -61,9 +64,6 @@ def f(t, y, modes, g, k0, mHOS, Ta):
 
         dphi += relax * 0.5 * W_m_2
 
-    deta_hat = jnp.fft.rfft(deta)
-    dphi_hat = jnp.fft.rfft(dphi)
-
     alias_mask = jnp.arange(modes+1) < modes * 2 / (mHOS + 1) + 1
     return jnp.concatenate((jnp.fft.rfft(deta) * alias_mask, jnp.fft.rfft(dphi) * alias_mask))
 
@@ -78,21 +78,12 @@ def rk4_step(t, y, h, modes, g, k0, mHOS, Ta, f_jit):
     
     return y_next
 
-def simulation(steps, step_size, y0, g, k0, mHOS, nRelax, Ta):
-    y = y0
-    t = 0
-    for i in range(steps):
-        y = rk4_step_jit(t, y, step_size, g, k0, mHOS, nRelax, Ta)
-        t += step_size
-
-    return y
-
 def run_simulation(params):
     y = jnp.asarray(utils.get_initial_condition(params), dtype=jnp.complex128)
     step_size = params["step_size"]
     steps = int(np.ceil(params["time"] / step_size))
-    f = params["f_jit"]
-    rk4_step = params["rk4_step_jit"]
+    f_jit = jax.jit(f, static_argnums=(2, 3, 4, 5, 6))
+    rk4_step_jit = jax.jit(rk4_step, static_argnums=(2, 3, 4, 5, 6, 7, 8))
 
     g = params["gravity"]
     k0 = 2 * np.pi / params["length"]
@@ -100,14 +91,29 @@ def run_simulation(params):
     Ta = params["Ta"]
     modes = params["modes"]
 
-    plt.plot(irfft(y[:modes+1]))
+    output_interval = params["output_interval"]
+    result = np.zeros((int(np.floor(steps / output_interval))+1, 2*(modes+1)), dtype=complex)
 
+    start_time = time.time()
     t = 0
     for i in range(steps):
-        y = rk4_step(t, y, step_size, modes, g, k0, mHOS, Ta, f)
+        if i % output_interval == 0:
+            result[i // output_interval] = y
+            print(f"{params["id"]}: {i / steps * 100:.1f}%")
+
+        y = rk4_step_jit(t, y, step_size, modes, g, k0, mHOS, Ta, f_jit)
         t += step_size
 
-    plt.plot(irfft(y[:modes+1]))
-    plt.xlim(0, 50)
-    plt.show()
+    result[-1] = y
+    
+    print(f"{params["id"]}: {100:.1f}%")
+
+    io_utils.save_results(params, result)
+
+    
+
+    
+
+
+    
 
