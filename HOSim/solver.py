@@ -109,11 +109,3 @@ def run_simulation(params):
     print(f"{params["id"]}: {100:.1f}%")
 
     io_utils.save_results(params, result)
-
-    
-
-    
-
-
-    
-
