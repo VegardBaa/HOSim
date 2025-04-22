@@ -78,7 +78,7 @@ def rk4_step(t, y, h, modes, g, k0, mHOS, Ta, f_jit):
     
     return y_next
 
-def run_simulation(params):
+def run_simulation(params, counter):
     y = jnp.asarray(utils.get_initial_condition(params), dtype=jnp.complex128)
     step_size = params["step_size"]
     steps = int(np.ceil(params["time"] / step_size))
@@ -99,13 +99,16 @@ def run_simulation(params):
     for i in range(steps):
         if i % output_interval == 0:
             result[i // output_interval] = y
-            print(f"{params["id"]}: {i / steps * 100:.1f}%")
 
         y = rk4_step_jit(t, y, step_size, modes, g, k0, mHOS, Ta, f_jit)
         t += step_size
 
+        if (i % (steps // 10) == 0) and (i != 0):
+            with counter.get_lock():
+                counter.value += 1
+
     result[-1] = y
-    
-    print(f"{params["id"]}: {100:.1f}%")
+    with counter.get_lock():
+        counter.value += 1
 
     io_utils.save_results(params, result)
