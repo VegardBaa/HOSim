@@ -7,7 +7,7 @@ import time
 
 from tqdm import tqdm
 
-from . import solver
+from . import solver, io_utils
 
 def get_all_simulation_params(config):
     initial_params = []
@@ -56,6 +56,10 @@ def _monitor_progress(counter, total_updates):
 def run(config):
     all_initial_params = get_all_simulation_params(config)
     os.makedirs("output", exist_ok=True)
+    for filename in os.listdir("output"):
+        file_path = os.path.join("output", filename)
+        if os.path.isfile(file_path):
+            os.remove(file_path)
 
     total_updates = len(all_initial_params) * 10
     counter = Value('i', 0)
@@ -67,4 +71,7 @@ def run(config):
         pool.map(_worker, all_initial_params)
 
     monitor.join()
+
+    io_utils.join()
+    
     return 0
