@@ -23,10 +23,9 @@ def load_json(input_path):
 def save_results(params, results):
     filename = f"output/{params["id"]}.h5"
     with h5py.File(filename, "w") as f:
-        param_group = f.create_group("params")
         for key, val in params.items():
             if isinstance(val, (int, float, str)):
-                param_group.attrs[key] = val
+                f.attrs[key] = val
 
         f.create_dataset("eta_hat", data=results[:, :params["modes"]+1])
         f.create_dataset("phi_hat", data=results[:, params["modes"]+1:])
