@@ -78,6 +78,7 @@ def join():
                 f_out.attrs["Ta"] = f.attrs["Ta"]
 
                 f_out.create_dataset("time", data=np.linspace(0, f.attrs["time"], len(eta_hat[0])))
+                f_out.create_dataset("x", data=np.linspace(0, f.attrs["length"], 2*f.attrs["modes"]))
 
     for file in files:
         os.remove(file)
