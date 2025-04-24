@@ -8,6 +8,7 @@ def get_initial_condition(params):
     g = params["gravity"]
     length = params["length"]
     modes = params["modes"]
+    mHOS = params["mHOS"]
 
     k0 = 2 * np.pi / length
     k = np.arange(1, modes+1)*k0
@@ -27,7 +28,9 @@ def get_initial_condition(params):
     eta_hat = np.sqrt(Sk * k0 * 0.5) * phases * 2 * modes
     phi_hat = eta_hat * np.exp(-1.j * np.pi / 2) * np.sqrt(g / k)
 
-    eta_hat = np.insert(eta_hat, 0, 0)
-    phi_hat = np.insert(phi_hat, 0, 0)
+    alias_mask = np.arange(modes+1) < modes * 2 / (mHOS + 1) * 0.9
+
+    eta_hat = np.insert(eta_hat, 0, 0) * alias_mask
+    phi_hat = np.insert(phi_hat, 0, 0) * alias_mask
 
     return np.concatenate((eta_hat, phi_hat))

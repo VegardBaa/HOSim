@@ -67,7 +67,7 @@ def join():
             f_out.create_dataset("gamma", data=np.array(gamma))
             f_out.create_dataset("depth", data=np.array(depth))
 
-            with h5py.File(f"output/{sim}_1.h5", "r") as f:
+            with h5py.File(f"output/{sim}_0.h5", "r") as f:
                 f_out.attrs["length"] = f.attrs["length"]
                 f_out.attrs["gravity"] = f.attrs["gravity"]
                 f_out.attrs["modes"] = f.attrs["modes"]

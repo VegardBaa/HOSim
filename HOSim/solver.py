@@ -64,7 +64,7 @@ def f(t, y, modes, g, k0, mHOS, Ta):
 
         dphi += relax * 0.5 * W_m_2
 
-    alias_mask = jnp.arange(modes+1) < modes * 2 / (mHOS + 1) + 1
+    alias_mask = jnp.arange(modes+1) < modes * 2 / (mHOS + 1) * 0.9
     return jnp.concatenate((jnp.fft.rfft(deta) * alias_mask, jnp.fft.rfft(dphi) * alias_mask))
 
 def rk4_step(t, y, h, modes, g, k0, mHOS, Ta, f_jit):
