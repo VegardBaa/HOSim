@@ -5,3 +5,4 @@ __pycache__/
 output/
 *.gif
 *.mp4
+*.h5

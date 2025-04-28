@@ -25,7 +25,7 @@ def load_json(input_path):
     return config
 
 def save_results(params, results):
-    filename = f"output/{params["id"]}.h5"
+    filename = f"output/{params['id']}.h5"
     with h5py.File(filename, "w") as f:
         for key, val in params.items():
             if isinstance(val, (int, float, str)):
