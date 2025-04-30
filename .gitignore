@@ -7,3 +7,6 @@ output/
 *.mp4
 *.h5
 *.pt
+*.pdf
+*.ipynb_checkpoints
+
