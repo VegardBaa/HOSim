@@ -6,3 +6,5 @@ output/
 *.gif
 *.mp4
 *.h5
+*.pdf
+*.ipynb_checkpoints
