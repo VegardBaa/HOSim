@@ -11,7 +11,7 @@ class SpectralConv1d(nn.Module):
 
         # learnable complex weights: shape (in_ch, out_ch, modes)
         self.weight = nn.Parameter(
-            torch.randn(in_channels, out_channels, modes, dtype=torch.cfloat) * 0.02
+            torch.randn(in_channels, out_channels, modes, dtype=torch.cfloat) * 0.1
         )
 
     def forward(self, x):
@@ -57,7 +57,8 @@ class FNO1d(nn.Module):
 
     def forward(self, x):
         # x: (B, N) → (B, 1, N)
-        x = x.unsqueeze(1)
+        if x.dim() == 2:
+            x = x.unsqueeze(1)  
 
         # lift
         x = self.input_proj(x)  # (B, width, N)
