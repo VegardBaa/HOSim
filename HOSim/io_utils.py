@@ -31,8 +31,11 @@ def save_results(params, results):
             if isinstance(val, (int, float, str)):
                 f.attrs[key] = val
 
-        f.create_dataset("eta_hat", data=results[:, :params["modes"]+1])
-        f.create_dataset("phi_hat", data=results[:, params["modes"]+1:])
+        if params["2d"]:
+            f.create_dataset("y", data=results)
+        else:
+            f.create_dataset("eta_hat", data=results[:, :params["modes"]+1])
+            f.create_dataset("phi_hat", data=results[:, params["modes"]+1:])
 
 def join():
     files = glob.glob(os.path.join("output", "*.h5"))
@@ -41,17 +44,24 @@ def join():
     for sim in stripped:
         eta_hat = []
         phi_hat = []
+        y = []
 
         Hs = []
         Tp = []
         gamma = []
         depth = []
 
+        is_2d = False
+
         for file in files:
             if re.fullmatch(rf"output\\{re.escape(sim)}_\d+\.h5", file):
                 with h5py.File(file, "r") as f:
-                    eta_hat.append(f["eta_hat"][:])
-                    phi_hat.append(f["phi_hat"][:])
+                    if f.attrs["2d"][()]:
+                        y.append(f["y"][:])
+                        is_2d = True
+                    else:
+                        eta_hat.append(f["eta_hat"][:])
+                        phi_hat.append(f["phi_hat"][:])
 
                     Hs.append(f.attrs["Hs"][()])
                     Tp.append(f.attrs['Tp'][()])
@@ -59,8 +69,11 @@ def join():
                     depth.append(f.attrs['Hs'][()])
 
         with h5py.File(f"output/{sim}.h5", "w") as f_out:
-            f_out.create_dataset("eta_hat", data=np.array(eta_hat))
-            f_out.create_dataset("phi_hat", data=np.array(phi_hat))
+            if is_2d:
+                f_out.create_dataset("y", data=np.array(y))
+            else:
+                f_out.create_dataset("eta_hat", data=np.array(eta_hat))
+                f_out.create_dataset("phi_hat", data=np.array(phi_hat))
 
             f_out.create_dataset("Hs", data=np.array(Hs))
             f_out.create_dataset("Tp", data=np.array(Tp))
@@ -77,7 +90,10 @@ def join():
                 f_out.attrs["output_interval"] = f.attrs["output_interval"]
                 f_out.attrs["Ta"] = f.attrs["Ta"]
 
-                f_out.create_dataset("time", data=np.linspace(0, f.attrs["time"], len(eta_hat[0])))
+                if is_2d:
+                    f_out.create_dataset("time", data=np.linspace(0, f.attrs["time"], len(y[0])))
+                else:
+                    f_out.create_dataset("time", data=np.linspace(0, f.attrs["time"], len(eta_hat[0])))
                 f_out.create_dataset("x", data=np.linspace(0, f.attrs["length"], 2*f.attrs["modes"]))
 
     for file in files:

@@ -26,8 +26,17 @@ def get_all_simulation_params(config):
                 "time" : simulation_params["time"],
                 "step_size" : simulation_params["step_size"],
                 "output_interval" : simulation_params["output_interval"],
-                "Ta" : simulation_params["Ta"]
+                "Ta" : simulation_params["Ta"],
             }
+
+            if "2d" in simulation_params:
+                if simulation_params["2d"]:
+                    params["2d"] = True
+                    params["beta"] = simulation_params["beta"][index]
+                else:
+                    params["2d"] = False
+            else:
+                params["2d"] = False
 
             initial_params.append(params)
     return initial_params
