@@ -9,4 +9,4 @@ output/
 *.pt
 *.pdf
 *.ipynb_checkpoints
-
+*.pt

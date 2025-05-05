@@ -11,14 +11,18 @@
       "gravity": 9.81,                 // float, [m/s^2] Gravitational acceleration
 
       // Simulation parameters
-      "modes": 4096,                    // int, [-] Number of modes for the simulation
-      "mHOS": 8,                       // int, [-] Order of nonlinearity
+      "modes": 256,                    // int, [-] Number of modes for the simulation
+      "mHOS": 4,                       // int, [-] Order of nonlinearity
     
       // Temporal Parameters
-      "time": 900,                     // float, [s] Total simulation time
+      "time": 5,                     // float, [s] Total simulation time
       "step_size": 0.025,              // float, [s] Time step size for the RK4 solver
       "output_interval": 20,           // int, [steps] Interval between output
-      "Ta": 400                        // float, [s] Dommermuth initialization time
+      "Ta": 50,                       // float, [s] Dommermuth initialization time
+
+      // 2d Parameters
+      "2d": true,                     // bool, [-] if simulation is 2d
+      "beta": [0.3]                    // float array, [-] spread in 2d directional spectrum [0, pi/2]
     }
   }
   
