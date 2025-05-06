@@ -1,5 +1,7 @@
 {
     "simulation": {
+      "workers" : 4,             //int, [-] number of workers to do simulations
+
       // Wave Parameters
       "Hs": [4.5],                // float array, [m] Significant wave height
       "Tp": [7.5],              // float array, [s] Peak period
@@ -22,7 +24,7 @@
 
       // 2d Parameters
       "2d": true,                     // bool, [-] if simulation is 2d
-      "beta": [0.3]                    // float array, [-] spread in 2d directional spectrum [0, pi/2]
+      "beta": [0.3]                    // float array, [-] spread in 2d directional spectrum [0, pi/2]            
     }
   }
   
