@@ -1,0 +1,37 @@
+{
+    "simulation": {
+      // Wave Parameters
+      "Hs": [3.62374691, 6.7243383, 2.84333733, 5.56626984, 6.03660245, 5.73340049,
+             4.42939475, 6.98881966, 6.61807975, 3.94177146, 4.98393723, 4.62083045,
+             3.44833153, 2.40086278, 6.2540266, 3.03413588],           // float array, [m] Significant wave height
+      "Tp": [10.93571276, 11.04782349, 11.98907081, 11.39147292, 11.77297403, 10.79878541,
+             10.80687322, 10.47709422, 11.60943829, 10.20927331, 10.48728269, 10.23665006,
+             11.41679989, 11.86766712, 10.32646372, 10.75767051],       // float array, [s] Peak period
+      "gamma": [3.69324593, 4.28481019, 4.41129187, 2.76371765, 3.1483698, 2.53942097,
+                3.62094438, 3.88364264, 3.81873906, 2.61634191, 3.32606417, 2.97848148,
+                2.72190777, 4.32869307, 3.54831381, 4.37271013],        // float array, [-] spectrum peakedness
+      "depth": [50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0,
+                50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0, 50.0],         // float array, [m] Water depth
+  
+      // Domain Parameters
+      "length": 3000,                  // float, [m] Spatial domain length
+      "gravity": 9.81,                 // float, [m/s^2] Gravitational acceleration
+  
+      // Simulation parameters
+      "modes": 256,                    // int, [-] Number of modes for the simulation
+      "mHOS": 4,                       // int, [-] Order of nonlinearity
+  
+      // Temporal Parameters
+      "time": 1000,                     // float, [s] Total simulation time
+      "step_size": 0.025,              // float, [s] Time step size for the RK4 solver
+      "output_interval": 20,           // int, [steps] Interval between output
+      "Ta": 50,                       // float, [s] Dommermuth initialization time
+  
+      // 2d Parameters
+      "2d": true,                     // bool, [-] if simulation is 2d
+      "beta": [0.28530918, 0.17779601, 0.13493435, 0.43612651, 0.16947836, 0.26832164,
+               0.4773974, 0.07027259, 0.22072519, 0.49634197, 0.15576294, 0.21617408,
+               0.30478154, 0.47793428, 0.32529851, 0.05070104]          // float array, [-] spread in 2d directional spectrum
+    }
+}
+  
