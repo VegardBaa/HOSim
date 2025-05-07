@@ -1,6 +1,6 @@
 import numpy as np
 import jax
-from multiprocessing import Pool, Value, Process
+from multiprocessing import Pool, Value, Process, cpu_count
 import matplotlib.pyplot as plt
 import os
 import time
@@ -11,6 +11,7 @@ from . import solver, io_utils
 
 def get_all_simulation_params(config):
     initial_params = []
+    workers = 1
     for simulation_name, simulation_params in config.items():
         for index in range(len(simulation_params["Hs"])):
             params = {
@@ -38,8 +39,11 @@ def get_all_simulation_params(config):
             else:
                 params["2d"] = False
 
+            if "workers" in simulation_params:
+                workers = simulation_params["workers"]
+
             initial_params.append(params)
-    return initial_params
+    return initial_params, workers
 
 _counter = None
 
@@ -63,7 +67,7 @@ def _monitor_progress(counter, total_updates):
                 last = current
 
 def run(config):
-    all_initial_params = get_all_simulation_params(config)
+    all_initial_params, workers = get_all_simulation_params(config)
     os.makedirs("output", exist_ok=True)
     for filename in os.listdir("output"):
         file_path = os.path.join("output", filename)
@@ -76,7 +80,8 @@ def run(config):
     monitor = Process(target=_monitor_progress, args=(counter, total_updates))
     monitor.start()
 
-    with Pool(initializer=_init_worker, initargs=(counter,)) as pool:
+    num_workers = min(workers, cpu_count())
+    with Pool(processes=num_workers, initializer=_init_worker, initargs=(counter,)) as pool:
         pool.map(_worker, all_initial_params)
 
     monitor.join()

@@ -24,7 +24,7 @@
       // Temporal Parameters
       "time": 1000,                     // float, [s] Total simulation time
       "step_size": 0.025,              // float, [s] Time step size for the RK4 solver
-      "output_interval": 20,           // int, [steps] Interval between output
+      "output_interval": 40,           // int, [steps] Interval between output
       "Ta": 50,                       // float, [s] Dommermuth initialization time
   
       // 2d Parameters
