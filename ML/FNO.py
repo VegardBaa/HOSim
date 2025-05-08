@@ -107,7 +107,7 @@ class SpectralConv2d(nn.Module):
         x_ft_low = x_ft[:, :, :self.modes_height, :self.modes_width]
         #    weight: (C, O, modes_h, modes_w)
         #    output low: (B, O, modes_h, modes_w)
-        out_low = torch.einsum("bchiw,cohw->bohw", x_ft_low, self.weight)
+        out_low = torch.einsum("bchw,cohw->bohw", x_ft_low, self.weight)
         out_ft[:, :, :self.modes_height, :self.modes_width] = out_low
 
         # 4) Inverse FFT to real space
