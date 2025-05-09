@@ -22,7 +22,7 @@
 
       // 2d Parameters
       "2d": true,                     // bool, [-] if simulation is 2d
-      "beta": [0.3]                    // float array, [-] spread in 2d directional spectrum [0, pi/2]
+      "beta": [0.1]                    // float array, [-] spread in 2d directional spectrum [0, pi/2]
     }
   }
   
