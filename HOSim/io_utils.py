@@ -5,6 +5,7 @@ import glob
 import os
 import re
 from collections import Counter
+import matplotlib.pyplot as plt
 
 def lists_to_numpy(obj):
     for key, value in obj.items():

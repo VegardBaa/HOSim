@@ -53,9 +53,12 @@ def get_initial_condition(params):
         eta_hat = np.sqrt(np.fft.fftshift(spec)*k0*k0*0.5) * phases * 2 * modes * 2 * modes
         phi_hat = eta_hat * np.exp(-1.j * SIGN * np.pi / 2) * np.sqrt(g / np.fft.fftshift(K))
 
-        index = (np.linspace(-modes, modes-1, 2*modes) < modes * 2 / (mHOS + 1)) & (np.linspace(-modes, modes-1, 2*modes) > -modes * 2 / (mHOS + 1))
-        eta_hat[index, index] = 0
-        phi_hat[index, index] = 0
+        index = (np.arange(0, 2*modes) > modes * 2 / (mHOS + 1)) & (np.arange(0, 2*modes) < 2 * modes - modes * 2 / (mHOS + 1))
+
+        eta_hat[index, :] = 0
+        eta_hat[:, index] = 0
+        phi_hat[index, :] = 0
+        phi_hat[:, index] = 0
 
         eta_hat = np.fft.rfft2(np.real(np.fft.ifft2(eta_hat)))
         phi_hat = np.fft.rfft2(np.real(np.fft.ifft2(phi_hat)))
