@@ -1,5 +1,7 @@
 {
     "simulation": {
+      "workers" : 4,             //int, [-] number of workers to do simulations
+
       // Wave Parameters
       "Hs": [4.5],                // float array, [m] Significant wave height
       "Tp": [7.5],              // float array, [s] Peak period
