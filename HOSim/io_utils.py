@@ -5,6 +5,7 @@ import glob
 import os
 import re
 from collections import Counter
+import matplotlib.pyplot as plt
 
 def lists_to_numpy(obj):
     for key, value in obj.items():
@@ -32,12 +33,6 @@ def save_results(params, results):
                 f.attrs[key] = val
 
         if params["2d"]:
-            modes = f.attrs["modes"]
-            mHOS = f.attrs["mHOS"]
-            # index_long = (np.arange(0, 2*modes) > modes * 2 / (mHOS + 1)) & (np.arange(0, 2*modes) < 2 * modes - modes * 2 / (mHOS + 1))
-            # index_short = (np.arange(0, modes+1) > modes * 2 / (mHOS + 1))
-            # results = results[:, :, ~index_long, :]
-            # results = results[:, :, :, ~index_short]
             f.create_dataset("y", data=results)
         else:
             f.create_dataset("eta_hat", data=results[:, :params["modes"]+1])
