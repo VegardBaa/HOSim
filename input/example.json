@@ -1,6 +1,6 @@
 {
     "simulation": {
-      "workers" : 4,             //int, [-] number of workers to do simulations
+      "workers" : 1,             //int, [-] number of workers to do simulations
 
       // Wave Parameters
       "Hs": [4.5],                // float array, [m] Significant wave height
@@ -13,7 +13,7 @@
       "gravity": 9.81,                 // float, [m/s^2] Gravitational acceleration
 
       // Simulation parameters
-      "modes": 256,                    // int, [-] Number of modes for the simulation
+      "modes": 512,                    // int, [-] Number of modes for the simulation
       "mHOS": 4,                       // int, [-] Order of nonlinearity
     
       // Temporal Parameters
