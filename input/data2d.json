@@ -1,11 +1,11 @@
 {
     "simulation": {
-       "workers": 5,
+       "workers": 4,
       // Wave Parameters
-      "Hs": [5.56626984, 6.03660245, 6.98881966, 6.61807975, 4.98393723],        // float array, [m] Significant wave height
-      "Tp": [10.93571276, 11.04782349, 11.98907081, 11.39147292, 11.77297403],       // float array, [s] Peak period
-      "gamma": [3.69324593, 4.28481019, 4.41129187, 3.88364264, 3.81873906],        // float array, [-] spectrum peakedness
-      "depth": [50.0, 50.0, 50.0, 50.0, 50.0],         // float array, [m] Water depth
+      "Hs": [5.56626984, 6.03660245, 6.98881966, 6.61807975],        // float array, [m] Significant wave height
+      "Tp": [10.93571276, 11.04782349, 11.98907081, 11.39147292],       // float array, [s] Peak period
+      "gamma": [3.69324593, 4.28481019, 4.41129187, 3.88364264],        // float array, [-] spectrum peakedness
+      "depth": [50.0, 50.0, 50.0, 50.0],         // float array, [m] Water depth
   
       // Domain Parameters
       "length": 3000,                  // float, [m] Spatial domain length
@@ -23,7 +23,7 @@
   
       // 2d Parameters
       "2d": true,                     // bool, [-] if simulation is 2d
-      "beta": [0.28530918, 0.17779601, 0.13493435, 0.43612651, 0.16947836]          // float array, [-] spread in 2d directional spectrum
+      "beta": [0.28530918, 0.17779601, 0.13493435, 0.43612651]          // float array, [-] spread in 2d directional spectrum
     }
 }
   
