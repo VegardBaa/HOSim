@@ -1,30 +1,30 @@
 {
-    "simulation": {
-      "workers" : 4,             //int, [-] number of workers to do simulations
+  "simulation": {
+    // Number of parallel workers to run simulations
+    "workers":          4,        // int
 
-      // Wave Parameters
-      "Hs": [4.5],                // float array, [m] Significant wave height
-      "Tp": [7.5],              // float array, [s] Peak period
-      "gamma": [3.3],             // float array, [-] spectrum peakedness
-      "depth": [50],               // float array, [m] Water depth
-    
-      // Domain Parameters
-      "length": 3000,                  // float, [m] Spatial domain length
-      "gravity": 9.81,                 // float, [m/s^2] Gravitational acceleration
+    // Wave spectrum parameters
+    "Hs":               [4.5],    // Significant wave height [m], float[]
+    "Tp":               [7.5],    // Peak wave period [s], float[]
+    "gamma":            [3.3],    // Spectrum peakedness [-], float[]
+    "depth":            [100],    // Water depth [m], float[]
 
-      // Simulation parameters
-      "modes": 256,                    // int, [-] Number of modes for the simulation
-      "mHOS": 4,                       // int, [-] Order of nonlinearity
-    
-      // Temporal Parameters
-      "time": 5,                     // float, [s] Total simulation time
-      "step_size": 0.025,              // float, [s] Time step size for the RK4 solver
-      "output_interval": 20,           // int, [steps] Interval between output
-      "Ta": 50,                       // float, [s] Dommermuth initialization time
+    // Spatial domain settings
+    "length":           3000,     // Domain length [m], float
+    "gravity":          9.81,     // Gravitational acceleration [m/s²], float
 
-      // 2d Parameters
-      "2d": true,                     // bool, [-] if simulation is 2d
-      "beta": [0.1]                    // float array, [-] spread in 2d directional spectrum [0, pi/2]
-    }
+    // Simulation configuration
+    "modes":            256,      // Total number of spectral modes, int
+    "mHOS":             8,        // Order of nonlinearity in HOS method, int
+    "Ta":               50,       // Dommermuth initialization time [s], float
+
+    // Temporal integration parameters
+    "time":             5,        // Total simulation duration [s], float
+    "step_size":        0.025,    // RK4 time step size [s], float
+    "output_interval":  20,       // Output every N steps, int
+
+    // Two‑dimensional wave spreading
+    "2d":               true,     // Enable 2D directional spectrum, bool
+    "beta":             [0.1]     // Spreading parameter in [0, π/2], float[]
   }
-  
+}
