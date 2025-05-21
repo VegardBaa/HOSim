@@ -11,3 +11,6 @@ output/
 *.ipynb_checkpoints
 *.pt
 *.npz
+*.npy
+*.npz
+*.zip
